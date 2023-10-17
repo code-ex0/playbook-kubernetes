@@ -13,9 +13,15 @@ spec:
       labels:
         app: gitlab
     spec:
-     containers:
+      containers:
        - name: gitlab
          image: gitlab/gitlab-ce:latest
          ports:
-           - containerPort: 80
+          - containerPort: 80
+         env:
+          - name: GITLAB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: gitlab-root-password
+                key: password
 ---
