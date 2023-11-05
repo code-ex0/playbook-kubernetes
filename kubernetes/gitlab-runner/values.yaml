@@ -5,3 +5,4 @@ runners:
       [runners.kubernetes]
         image = "ubuntu:22.04"
 concurrent: 10
+gitlabUrl: "https://gitlab.com"
