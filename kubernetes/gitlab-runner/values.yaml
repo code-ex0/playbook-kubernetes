@@ -2,7 +2,30 @@ runners:
   secret: gitlab-runner-secret
   config: |
     [[runners]]
+      token = "glrt-2Sssz2ntpJF7-nvjxf5z"
       [runners.kubernetes]
-        image = "ubuntu:22.04"
+        image = "ubuntu:20.04"
+        privileged = true
+        [[runners.kubernetes.volumes.empty_dir]]
+          name = "docker-certs"
+          mount_path = "/certs/client"
+          medium = "Memory"
+        cache_dir = "/cache"
+        [runners.cache]
+        [runners.kubernetes.volumes]
+          [[runners.kubernetes.volumes.host_path]]
+            name = "cache"
+            mount_path = "/cache"
+            host_path = "/cache"
+        
 concurrent: 10
+checkInterval: 0
 gitlabUrl: "https://gitlab.com"
+rbac:
+  create: true
+  rules:
+    - resources: ["configmaps", "pods", "pods/attach", "secrets", "services"]
+      verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+    - apiGroups: [""]
+      resources: ["pods/exec"]
+      verbs: ["create", "patch", "delete"]
